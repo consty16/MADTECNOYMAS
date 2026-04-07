@@ -133,7 +133,7 @@ export default function App() {
               </h2>
               <p className="text-lg md:text-2xl text-white leading-relaxed mb-6 max-w-3xl mx-auto drop-shadow-[0_0_15px_rgba(86,241,224,0.8)]">
                 Nos dedicamos a la venta online de productos electrónicos, también vendemos por pedido.
-                Si necesitas reparar tu PC o reinstalar tu Office, ¡también cuenta con nosotros!
+                Si necesitas reparar tu PC o reinstalar tu Office, ¡también cuenta con nosotros!.
               </p>
             </motion.div>
           </div>
