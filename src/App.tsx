@@ -238,7 +238,7 @@ export default function App() {
               <BookOpen className="text-primary" size={32} />
               <div>
                 <h3 className="text-2xl md:text-4xl font-bold text-primary">
-                  ZONA AHORRO
+                  ZONA AHORRO.
                 </h3>
                 <p className="text-on-surface-variant text-sm uppercase tracking-widest mt-1">
                   Explora nuestro catálogo de ofertas
