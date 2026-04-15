@@ -487,7 +487,7 @@ export default function App() {
         </div>
 
         <div className="max-w-7xl mx-auto mt-16 pt-8 border-t border-white/5 text-center text-xs text-on-surface-variant/40">
-          © 2026 MAD TECNO Y MAS. Todos los derechos reservados.
+          DESARROLLADO POR C DESIGN IA 2025 BY AI STUDIO GOOGLE.
         </div>
       </footer>
 
