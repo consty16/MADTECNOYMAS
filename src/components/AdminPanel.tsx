@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { LogOut, Menu, X } from 'lucide-react';
 import { AdminOrders } from './AdminOrders';
 import { AdminProductos } from './AdminProductos';
-import { AdminShippingInfo } from './AdminShippingInfo';
 import { AdminShippingRates } from './AdminShippingRates';
 import { supabase } from '../supabaseClient';
 
@@ -11,7 +10,7 @@ interface AdminPanelProps {
 }
 
 export const AdminPanel: React.FC<AdminPanelProps> = ({ onLogout }) => {
-  const [activeSection, setActiveSection] = useState<'orders' | 'productos' | 'shipping-info' | 'shipping-rates'>('orders');
+  const [activeSection, setActiveSection] = useState<'orders' | 'productos' | 'shipping-rates'>('orders');
   const [sidebarOpen, setSidebarOpen] = useState(true);
 
   const handleLogout = async () => {
@@ -27,7 +26,6 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ onLogout }) => {
   const sections = [
     { id: 'orders' as const, label: '📦 Órdenes', icon: '📦' },
     { id: 'productos' as const, label: '🛍️ Productos', icon: '🛍️' },
-    { id: 'shipping-info' as const, label: '🚚 Info Envío', icon: '🚚' },
     { id: 'shipping-rates' as const, label: '💰 Tarifas Envío', icon: '💰' },
   ];
 
@@ -87,7 +85,6 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ onLogout }) => {
           <div className="p-6">
             {activeSection === 'orders' && <AdminOrders />}
             {activeSection === 'productos' && <AdminProductos />}
-            {activeSection === 'shipping-info' && <AdminShippingInfo />}
             {activeSection === 'shipping-rates' && <AdminShippingRates />}
           </div>
         </main>
