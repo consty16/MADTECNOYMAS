@@ -87,22 +87,22 @@ export const CatalogPage: React.FC<CatalogPageProps> = ({ onClose, onAddToCart }
     >
       {/* Header */}
       <div className="sticky top-0 z-40 bg-surface-container-highest/95 backdrop-blur border-b border-primary/10">
-        <div className="max-w-7xl mx-auto px-6 py-6 flex items-center justify-between">
+        <div className="max-w-7xl mx-auto px-4 md:px-6 py-4 md:py-6 flex items-center justify-between gap-2">
           <motion.button
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
             onClick={onClose}
-            className="flex items-center gap-2 px-4 py-2 bg-primary/10 border border-primary/40 rounded-lg text-primary hover:bg-primary/20 transition-all font-bold"
+            className="flex items-center gap-1.5 md:gap-2 px-2.5 sm:px-4 py-1.5 md:py-2 bg-primary/10 border border-primary/40 rounded-lg text-primary hover:bg-primary/20 transition-all font-bold shrink-0 text-xs sm:text-sm md:text-base shadow-sm"
           >
-            <ChevronLeft size={18} />
+            <ChevronLeft size={16} className="md:size-5" />
             <span>Volver</span>
           </motion.button>
           
-          <h1 className="text-3xl md:text-4xl font-black text-primary">
-            Catálogo de Productos
+          <h1 className="text-sm min-[350px]:text-base sm:text-2xl md:text-4xl font-black text-primary text-center flex-1 leading-snug px-1">
+            Categorías de Productos
           </h1>
 
-          <div className="w-[140px]" />
+          <div className="w-[76px] min-[360px]:w-[80px] sm:w-[90px] md:w-[140px] shrink-0" />
         </div>
       </div>
 

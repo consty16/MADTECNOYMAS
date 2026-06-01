@@ -23,6 +23,7 @@ export default function App() {
   const [isCatalogPageOpen, setIsCatalogPageOpen] = React.useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = React.useState(false);
   const [cart, setCart] = React.useState<any[]>([]);
+  const totalCartItems = cart.reduce((total, item) => total + (item.cantidad || 0), 0);
   const [adminError, setAdminError] = React.useState('');
 
   const handleAddToCart = (item: any) => {
@@ -117,7 +118,13 @@ export default function App() {
     : [
         ...productos.filter((p: any) => p.category === 'smartwatch'),
         ...PRODUCTS.filter(p => p.category === 'smartwatch').filter(sp => 
-          !productos.some((dp: any) => dp.nombre === sp.title || dp.imagen === sp.image)
+          !productos.some((dp: any) => {
+            const dpName = (dp.nombre || '').toLowerCase();
+            const spTitle = (sp.title || '').toLowerCase();
+            const dpFile = (dp.imagen || '').split('/').pop() || 'dp-no';
+            const spFile = (sp.image || '').split('/').pop() || 'sp-no';
+            return dpName === spTitle || dpFile === spFile || dpName.includes(spTitle) || spTitle.includes(dpName);
+          })
         )
       ]).filter(p => {
         const img = (p.imagen || p.image || '').toLowerCase();
@@ -156,7 +163,14 @@ export default function App() {
           <motion.button
             whileHover={{ scale: 1.05, boxShadow: "0 0 30px rgba(255, 0, 255, 0.6)" }}
             whileTap={{ scale: 0.95 }}
-            onClick={() => document.getElementById('inicio')?.scrollIntoView({ behavior: 'smooth' })}
+            onClick={() => {
+              window.scrollTo({ top: 0, behavior: 'smooth' });
+              setIsCatalogOpen(false);
+              setIsCatalogPageOpen(false);
+              setIsCartOpen(false);
+              setIsReviewsOpen(false);
+              setIsMobileMenuOpen(false);
+            }}
             className="flex items-center gap-2 px-4 py-2 bg-[#ff00ff]/10 border border-[#ff00ff]/40 rounded-lg text-[#ff00ff] hover:bg-[#ff00ff]/20 transition-all shadow-[0_0_20px_rgba(255, 0, 255, 0.4)] font-bold uppercase tracking-widest text-[10px] md:text-xs"
           >
             <Home size={14} fill="currentColor" className="drop-shadow-[0_0_8px_rgba(255, 0, 255, 0.8)]" />
@@ -190,7 +204,14 @@ export default function App() {
                 onClick={() => setIsCartOpen(true)}
                 className="flex items-center gap-2 px-4 py-2 bg-primary/10 border border-primary/40 rounded-lg text-primary hover:bg-primary/20 transition-all shadow-[0_0_20px_rgba(86, 241, 224, 0.4)] font-bold"
               >
-                <ShoppingCart size={14} className="drop-shadow-[0_0_8px_rgba(86, 241, 224, 0.8)]" />
+                <div className="relative">
+                  <ShoppingCart size={14} className="drop-shadow-[0_0_8px_rgba(86, 241, 224, 0.8)]" />
+                  {totalCartItems > 0 && (
+                    <span id="cart-badge-desktop" className="absolute -top-2.5 -right-2.5 bg-red-600 text-white rounded-full text-[8px] leading-none min-w-[14px] h-[14px] flex items-center justify-center font-black border border-background shadow-lg px-0.5">
+                      {totalCartItems > 9 ? '9+' : totalCartItems}
+                    </span>
+                  )}
+                </div>
                 <span className="drop-shadow-[0_0_3px_rgba(86, 241, 224, 0.5)]">Carrito</span>
               </motion.button>
               <motion.button
@@ -280,7 +301,14 @@ export default function App() {
                     }}
                     className="flex items-center gap-3 px-3 py-2.5 bg-primary/5 hover:bg-primary/10 border border-primary/20 rounded-lg text-primary text-left transition-all"
                   >
-                    <ShoppingCart size={14} className="drop-shadow-[0_0_6px_rgba(86,241,224,0.6)]" />
+                    <div className="relative">
+                      <ShoppingCart size={14} className="drop-shadow-[0_0_6px_rgba(86,241,224,0.6)]" />
+                      {totalCartItems > 0 && (
+                        <span id="cart-badge-mobile" className="absolute -top-2.5 -right-2.5 bg-red-600 text-white rounded-full text-[8px] leading-none min-w-[14px] h-[14px] flex items-center justify-center font-black border border-background shadow-lg px-0.5">
+                          {totalCartItems > 9 ? '9+' : totalCartItems}
+                        </span>
+                      )}
+                    </div>
                     <span>Carrito</span>
                   </motion.button>
 
@@ -767,16 +795,9 @@ export default function App() {
 
       {/* Footer con información de contacto y Reseñas */}
       <footer id="contacto" className="bg-surface-container-low border-t border-primary/10 py-16 px-6">
-        <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-12 mb-16">
+        <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-12 mb-16">
           <div className="space-y-6">
-            <motion.img 
-              src="/logo.png" 
-              alt="MAD TECNO Y MAS" 
-              className="h-16 w-auto object-contain opacity-80 hover:opacity-100 transition-opacity"
-              whileHover={{ scale: 1.05 }}
-              referrerPolicy="no-referrer"
-            />
-            <p className="text-on-surface-variant text-sm leading-relaxed">
+            <p className="text-on-surface-variant text-base font-bold text-center leading-relaxed">
               Tu destino tecnológico para los mejores gadgets, reparaciones y accesorios personalizados.
             </p>
             <motion.button
@@ -791,35 +812,13 @@ export default function App() {
           </div>
 
           <div className="space-y-4">
-            <h4 className="text-sm font-bold uppercase tracking-wider text-primary">Contacto</h4>
-            <ul className="space-y-3 text-sm text-on-surface-variant/80">
-              <li className="flex items-center gap-2">
-                <MessageCircle size={16} className="text-primary" />
-                <a href="https://wa.me/543815341233" target="_blank" rel="noopener noreferrer" className="hover:text-primary transition-colors">
-                  +54 381 534-1233
-                </a>
-              </li>
-              <li className="flex items-center gap-2">
-                <Mail size={16} className="text-primary" />
-                <a href="mailto:admin@madtecno.com" className="hover:text-primary transition-colors">
-                  admin@madtecno.com
-                </a>
-              </li>
-              <li className="flex items-center gap-2">
-                <MapPin size={16} className="text-primary" />
-                <span>Tucumán, Argentina</span>
-              </li>
-            </ul>
-          </div>
-
-          <div className="space-y-4">
             <h4 className="text-sm font-bold uppercase tracking-wider text-primary font-sans">Ubicación y Atención</h4>
-            <p className="text-sm text-on-surface-variant/80 leading-relaxed">
+            <p className="text-sm font-bold text-on-surface-variant/80 leading-relaxed">
               Atención personalizada online y envíos express a todo el país.
             </p>
             <div className="text-xs text-on-surface-variant/60">
               <p className="font-semibold text-primary/80">Horarios:</p>
-              <p>Lunes a Sábados: 9:00 - 13:00 hs. / 17:00 - 21:00 hs.</p>
+              <p className="text-base font-bold">Lunes a Sábados: 9:00 - 13:00 hs. / 17:00 - 21:00 hs.</p>
             </div>
           </div>
         </div>
@@ -855,7 +854,7 @@ export default function App() {
           <ReviewsForm />
         </div>
 
-        <div className="max-w-7xl mx-auto mt-16 pt-8 border-t border-white/5 text-center text-xs text-on-surface-variant/40">
+        <div className="max-w-7xl mx-auto mt-[63px] h-auto md:h-[47.3333px] w-full max-w-[1211.33px] px-4 pt-8 border-t border-white/5 text-center text-xs text-on-surface-variant/40">
           © 2026 MAD TECNO Y MAS. Todos los derechos reservados.
         </div>
       </footer>
@@ -874,7 +873,7 @@ export default function App() {
       />
       <ReviewsModal isOpen={isReviewsOpen} onClose={() => setIsReviewsOpen(false)} />
       {isCatalogPageOpen && (
-        <div className="fixed inset-0 z-40 overflow-y-auto">
+        <div className="fixed inset-0 z-[60] overflow-y-auto">
           <CatalogPage 
             onClose={() => setIsCatalogPageOpen(false)}
             onAddToCart={handleAddToCart}
